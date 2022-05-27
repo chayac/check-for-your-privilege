@@ -7,24 +7,26 @@
 
 using namespace std;
 
-const std::string generateHelloString(const std::string & personName);
-
 class Model {
     public:
         struct Sample {
             bool male;
             bool age_25_to_34;
             bool white;
-            bool bipoc;
+            // bool bipoc;
             bool highest_income;
             bool below_poverty;
             bool nonfamily_household;
             bool bach_degree_or_higher;
             bool rent_burdened;
+            static bool deepEquals(const Model::Sample* lhs, const Model::Sample *rhs);
         };
     protected:
         int numSamples;
         vector<Sample*> samples;
+        vector<Sample*> samples_highest_income;
+        vector<Sample*> samples_below_poverty;
+        vector<Sample*> samples_rent_burdened;
         default_random_engine generator;
     public:
         Model();
@@ -60,6 +62,15 @@ class Model {
         };
         Sample* genSample();
         void genSamples();
-        vector<Sample*>* getSamples();
+        vector<Sample*>& getSamples();
+        Sample* genSampleHighestIncome();
+        Sample* genSampleBelowPoverty();
+        Sample* genSampleRentBurdened();
+        vector<Sample*>& getSamplesHighestIncome();
+        vector<Sample*>& getSamplesBelowPoverty();
+        vector<Sample*>& getSamplesRentBurdened();
+        int getCountHighestIncome(Sample* comparison);
+        int getCountBelowPoverty(Sample* comparison);
+        int getCountRentBurdened(Sample* comparison);
         
 };
