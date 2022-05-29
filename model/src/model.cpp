@@ -11,6 +11,7 @@ bool Model::bernoulli(const float p) {
 Model::Model() {
     cout << "Create model" << endl;
     numSamples = DEFAULT_NUM_SAMPLES;
+    generator.seed(random_device{}());
 }
 
 Model::Model(int n) {

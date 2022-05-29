@@ -20,29 +20,29 @@ class Model {
     public:
         Model();
         Model(int n);
-        bool bernoulli(const float p);
-        float p_male() const {
+        virtual bool bernoulli(const float p);
+        virtual float p_male() const {
             return 0.5;
         };
-        float p_25_to_34() const {
+        virtual float p_25_to_34() const {
             return 0.5;
         };
-        float p_white() const {
+        virtual float p_white() const {
             return 0.5;
         };
-        float p_bipoc() const {
+        virtual float p_bipoc() const {
             return 0.5;
         };
-        float p_highest_income() const {
+        virtual float p_highest_income() const {
             return 0.5;
         };
-        float p_below_poverty() const {
+        virtual float p_below_poverty() const {
             return 0.5;
         };
-        float p_nonfamily_households() const {
+        virtual float p_nonfamily_households() const {
             return 0.5;
         };
-        float p_bach_degree_or_higher() const {
+        virtual float p_bach_degree_or_higher() const {
             return 0.5;
         };
         virtual float p_rent_burdened() const {

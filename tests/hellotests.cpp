@@ -5,12 +5,12 @@
 #include <algorithm>
 #include <random>
 
-TEST(ModelTests, testDefaultConstructor) {
-    Model model;
-    model.genSamples();
-    auto samples = model.getSamples();
-    EXPECT_EQ(samples.size(), 10000);
-}
+// TEST(ModelTests, testDefaultConstructor) {
+//     Model model;
+//     model.genSamples();
+//     auto samples = model.getSamples();
+//     EXPECT_EQ(samples.size(), 10000);
+// }
 
 bool IsMale(shared_ptr<Sample> i) {
     return i->male;
@@ -36,7 +36,7 @@ TEST(ModelTests, testSamplesBase) {
     ASSERT_NE(male_cnt, 0);
 }
 
-TEST(ModelTests, testSamplesSeattle) {
+TEST(SeattleModelTests, testSamplesSeattle) {
     SeattleModel model;
     model.genSamples();
     auto samples = model.getSamples();
@@ -187,7 +187,7 @@ TEST(ModelTests, testCalcRentBurdenedBase) {
     cout << "base rent burdened: " << 1.0*nMale/particles << ", " << 1.0*nNonmale/particles << endl;
 }
 
-TEST(ModelTests, testCalcRentBurdenedSeattle) {
+TEST(SeattleModelTests, testCalcRentBurdenedSeattle) {
     SeattleModel model;
     model.genSamples();
     auto samples = model.getSamplesRentBurdened();
