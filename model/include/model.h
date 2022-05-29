@@ -8,20 +8,6 @@
 using namespace std;
 
 class Model {
-    public:
-        struct Sample {
-            bool male = false;
-            bool age_25_to_34 = false;
-            bool white = false;
-            // bool bipoc;
-            bool highest_income = false;
-            bool below_poverty = false;
-            bool nonfamily_household = false;
-            bool bach_degree_or_higher = false;
-            bool rent_burdened = false;
-            static bool deepEquals(const Model::Sample* lhs, const Model::Sample *rhs);
-            bool deepEquals(const Model::Sample *rhs) const;
-        };
     protected:
         const int DEFAULT_NUM_SAMPLES = 1000;
         int numSamples;
