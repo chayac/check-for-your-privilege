@@ -6,6 +6,7 @@ using namespace std;
 
 class SeattleModel : public Model {
     public:
+        SeattleModel(int n) : Model{n} {};
         float p_male() const {
             // ACS 2020 5Y DP05: total population, male 18 years and older
             return 0.506;
