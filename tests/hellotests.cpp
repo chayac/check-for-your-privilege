@@ -10,7 +10,7 @@ TEST(ModelTests, testDefaultConstructor) {
     Sample* sample = model.genSample();
     model.genSamples();
     vector<Sample*> samples = model.getSamples();
-    EXPECT_EQ(samples.size(), 1000);
+    EXPECT_EQ(samples.size(), 10000);
 }
 
 bool IsMale(Sample* i) {
@@ -137,4 +137,42 @@ TEST(ModelTests, testProbBelowPovertySeattle) {
     p = seattle_model.getProbBelowPoverty(sample);
     cout << "seattle p nonmale below poverty: " << p << endl;
     ASSERT_GT(p, 0);
+}
+
+TEST(ModelTests, testCalcRentBurdenedBase) {
+    Model model;
+    model.genSamples();
+    vector<Sample*> samples = model.getSamplesRentBurdened();
+    int particles = samples.size();
+    int nMale = 0;
+    int nNonmale = 0;
+    for (const auto s : samples) {
+        if (s->male) {
+            nMale++;
+        } else {
+            nNonmale++;
+        }
+    }
+    ASSERT_GT(1.0*nMale/particles, 0);
+    ASSERT_GT(1.0*nNonmale/particles, 0);
+    cout << "base rent burdened: " << 1.0*nMale/particles << ", " << 1.0*nNonmale/particles << endl;
+}
+
+TEST(ModelTests, testCalcRentBurdenedSeattle) {
+    SeattleModel model;
+    model.genSamples();
+    vector<Sample*> samples = model.getSamplesRentBurdened();
+    int particles = samples.size();
+    int nMale = 0;
+    int nNonmale = 0;
+    for (const auto s : samples) {
+        if (s->male) {
+            nMale++;
+        } else {
+            nNonmale++;
+        }
+    }
+    ASSERT_GT(1.0*nMale/particles, 0);
+    ASSERT_GT(1.0*nNonmale/particles, 0);
+    cout << "Seattle rent burdened: " << 1.0*nMale/particles << ", " << 1.0*nNonmale/particles << endl;
 }

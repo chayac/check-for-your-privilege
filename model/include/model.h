@@ -10,7 +10,7 @@ using namespace std;
 
 class Model {
     protected:
-        const int DEFAULT_NUM_SAMPLES = 1000;
+        const int DEFAULT_NUM_SAMPLES = 10000;
         int numSamples;
         vector<Sample*> samples;
         vector<Sample*> samples_highest_income;
@@ -76,5 +76,7 @@ class Model {
         virtual float getProbBelowPoverty(const Sample* comparison) const;
         virtual float getProbRentBurdened(const Sample* comparison) const;
         void setSampleDemographics(Sample* sample, bool male, bool age_25_to_34, bool white, bool nonfamily_household, bool bach_degree_or_higher);
-        
+    private:
+        Model(const Model&);
+        Model& operator=(const Model&);
 };
