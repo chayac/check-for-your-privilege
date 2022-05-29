@@ -30,8 +30,8 @@ void Model::createSampleTemplates() {
 Model::Model() {
     cout << "Create model" << endl;
     numSamples = DEFAULT_NUM_SAMPLES;
-    genSamples();
-    initialize();
+    // genSamples();
+    // initialize();
 }
 
 void Model::initialize() {
@@ -47,7 +47,7 @@ Model::Model(int n) {
     cout << "Create model with n samples" << endl;
     numSamples = n;
     genSamples();
-    initialize();
+    // initialize();
 }
 
 Model::~Model() {
@@ -58,20 +58,28 @@ Model::~Model() {
 }
 
 Model::Sample* Model::genSample() {
+    float p_m = p_male();
+    float p_age = p_25_to_34();
+    float p_w = p_white();
+    float p_inc = p_highest_income();
+    float p_nf = p_nonfamily_households();
+    float p_deg = p_bach_degree_or_higher();
+    float p_rent = p_rent_burdened();
+    float p_pov = p_below_poverty();
     Model::Sample* sample = new Model::Sample();
-    sample->male = bernoulli(p_male());
-    sample->age_25_to_34 = bernoulli(p_25_to_34());
-    sample->white = bernoulli(p_white());
+    sample->male = bernoulli(p_m);
+    sample->age_25_to_34 = bernoulli(p_age);
+    sample->white = bernoulli(p_w);
     // sample->bipoc = bernoulli(p_bipoc());
-    sample->highest_income = bernoulli(p_highest_income());
-    if (sample->highest_income) {
-        sample->below_poverty = false;
-    } else {
-        sample->below_poverty = bernoulli(p_below_poverty());
-    }
-    sample->nonfamily_household = bernoulli(p_nonfamily_households());
-    sample->bach_degree_or_higher = bernoulli(p_bach_degree_or_higher());
-    sample->rent_burdened = bernoulli(p_rent_burdened());
+    sample->highest_income = bernoulli(p_inc);
+    // if (sample->highest_income) {
+    //     sample->below_poverty = false;
+    // } else {
+        sample->below_poverty = bernoulli(p_pov);
+    // }
+    sample->nonfamily_household = bernoulli(p_nf);
+    sample->bach_degree_or_higher = bernoulli(p_deg);
+    sample->rent_burdened = bernoulli(p_rent);
     return sample;
 }
 
@@ -118,10 +126,29 @@ Model::Sample* Model::genSampleRentBurdened() {
 }
 
 void Model::genSamples() {
+    float p_m = p_male();
+    float p_age = p_25_to_34();
+    float p_w = p_white();
+    float p_inc = p_highest_income();
+    float p_nf = p_nonfamily_households();
+    float p_deg = p_bach_degree_or_higher();
+    float p_rent = p_rent_burdened();
+    float p_pov = p_below_poverty();
+    
     for (int i = 0; i < numSamples; i++) {
-        samples.push_back(genSample());
+        // samples.push_back(genSample());
+        Model::Sample* sample = new Model::Sample();
+        sample->male = bernoulli(p_m);
+        sample->age_25_to_34 = bernoulli(p_age);
+        sample->white = bernoulli(p_w);
+        sample->highest_income = bernoulli(p_inc);
+        sample->below_poverty = bernoulli(p_pov);
+        sample->nonfamily_household = bernoulli(p_nf);
+        sample->bach_degree_or_higher = bernoulli(p_deg);
+        sample->rent_burdened = bernoulli(p_rent);
+        samples.push_back(sample);
     }
-    cout << "number of samples: " << samples.size() << endl;
+    // cout << "number of samples: " << samples.size() << endl;
 }
 
 void Model::genAltSamples() {

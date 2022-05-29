@@ -65,11 +65,12 @@ class Model {
         float p_bach_degree_or_higher() const {
             return 0.5;
         };
-        float p_rent_burdened() const {
+        virtual float p_rent_burdened() const {
+            cout << "model rent burdened" << endl;
             return 0.5;
         };
         Sample* genSample();
-        void genSamples();
+        virtual void genSamples();
         void genAltSamples();
         vector<Sample*>& getSamples();
         vector<Sample>& getAltSamples() {
@@ -84,9 +85,9 @@ class Model {
         int getCountHighestIncome(const Sample* comparison) const;
         int getCountBelowPoverty(const Sample* comparison) const;
         int getCountRentBurdened(const Sample* comparison) const;
-        float getProbHighestIncome(const Sample* comparison) const;
-        float getProbBelowPoverty(const Sample* comparison) const;
-        float getProbRentBurdened(const Sample* comparison) const;
+        virtual float getProbHighestIncome(const Sample* comparison) const;
+        virtual float getProbBelowPoverty(const Sample* comparison) const;
+        virtual float getProbRentBurdened(const Sample* comparison) const;
         void setSampleDemographics(Sample* sample, bool male, bool age_25_to_34, bool white, bool nonfamily_household, bool bach_degree_or_higher);
         
 };
