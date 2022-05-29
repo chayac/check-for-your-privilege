@@ -12,21 +12,14 @@ class Model {
     protected:
         const int DEFAULT_NUM_SAMPLES = 10000;
         int numSamples;
-        vector<Sample*> samples;
-        vector<Sample*> samples_highest_income;
-        vector<Sample*> samples_below_poverty;
-        vector<Sample*> samples_rent_burdened;
+        vector<shared_ptr<Sample>> samples;
+        vector<shared_ptr<Sample>> samples_highest_income;
+        vector<shared_ptr<Sample>> samples_below_poverty;
+        vector<shared_ptr<Sample>> samples_rent_burdened;
         default_random_engine generator;
-        Sample* highestIncomeTemplate;
-        Sample* belowPovertyTemplate;
-        Sample* rentBurdenedTemplate;
-        vector<Sample> altSample;
-        void createSampleTemplates();
-        void initialize();
     public:
         Model();
         Model(int n);
-        ~Model();
         bool bernoulli(const float p);
         float p_male() const {
             return 0.5;
@@ -56,27 +49,17 @@ class Model {
             cout << "model rent burdened" << endl;
             return 0.5;
         };
-        Sample* genSample();
         virtual void genSamples();
-        void genAltSamples();
-        vector<Sample*>& getSamples();
-        vector<Sample>& getAltSamples() {
-            return altSample;
-        }
-        Sample* genSampleHighestIncome();
-        Sample* genSampleBelowPoverty();
-        Sample* genSampleRentBurdened();
-        vector<Sample*>& getSamplesHighestIncome();
-        vector<Sample*>& getSamplesBelowPoverty();
-        vector<Sample*>& getSamplesRentBurdened();
-        int getCountHighestIncome(const Sample* comparison) const;
-        int getCountBelowPoverty(const Sample* comparison) const;
-        int getCountRentBurdened(const Sample* comparison) const;
-        virtual float getProbHighestIncome(const Sample* comparison) const;
-        virtual float getProbBelowPoverty(const Sample* comparison) const;
-        virtual float getProbRentBurdened(const Sample* comparison) const;
-        void setSampleDemographics(Sample* sample, bool male, bool age_25_to_34, bool white, bool nonfamily_household, bool bach_degree_or_higher);
-    private:
-        Model(const Model&);
-        Model& operator=(const Model&);
+        vector<shared_ptr<Sample>> getSamples() {
+            return samples;
+        };
+        vector<shared_ptr<Sample>> getSamplesHighestIncome() {
+            return samples_highest_income;
+        };
+        vector<shared_ptr<Sample>> getSamplesBelowPoverty() {
+            return samples_below_poverty;
+        };
+        vector<shared_ptr<Sample>> getSamplesRentBurdened() {
+            return samples_rent_burdened;
+        };
 };
