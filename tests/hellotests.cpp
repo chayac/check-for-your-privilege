@@ -5,19 +5,51 @@
 #include <algorithm>
 #include <random>
 
-// TEST(ModelTests, testDefaultConstructor) {
-//     Model model;
-//     model.genSamples();
-//     auto samples = model.getSamples();
-//     EXPECT_EQ(samples.size(), 10000);
-// }
+
+TEST(ModelTests, testBernoulli) {
+    Model model(1);
+    int it = 1000;
+    float p = 0.1;
+    int count = 0;
+    while (p < 0.9) {
+        p += 0.1;
+        count = 0;
+        for (int i = 0; i < it; i++) {
+            if (model.bernoulli(p)) {
+                count++;
+            }
+        }
+        cout << "p " << p << ": " << 1.0*count/it << endl;
+    }
+    
+    ASSERT_NEAR(1.0*count/it, p, 0.1);
+}
+
+TEST(SeattleModelTests, testBernoulli) {
+    SeattleModel model(1);
+    int it = 1000;
+    float p = 0.1;
+    int count = 0;
+    while (p < 0.9) {
+        p += 0.1;
+        count = 0;
+        for (int i = 0; i < it; i++) {
+            if (model.bernoulli(p)) {
+                count++;
+            }
+        }
+        cout << "p " << p << ": " << 1.0*count/it << endl;
+    }
+    
+    ASSERT_NEAR(1.0*count/it, p, 0.1);
+}
 
 bool IsMale(shared_ptr<Sample> i) {
     return i->male;
 }
 
 TEST(ModelTests, testSamplesBase) {
-    Model model;
+    Model model(10000);
     model.genSamples();
     auto samples = model.getSamples();
     auto s_inc = model.getSamplesHighestIncome();
@@ -37,7 +69,7 @@ TEST(ModelTests, testSamplesBase) {
 }
 
 TEST(SeattleModelTests, testSamplesSeattle) {
-    SeattleModel model;
+    SeattleModel model(10000);
     model.genSamples();
     auto samples = model.getSamples();
     auto s_inc = model.getSamplesHighestIncome();
@@ -47,7 +79,7 @@ TEST(SeattleModelTests, testSamplesSeattle) {
     ASSERT_NE(s_inc.size(), 0);
     ASSERT_NE(s_pov.size(), 0);
     ASSERT_NE(s_rent.size(), 0);
-    cout << "Samples base: all: " << samples.size() <<
+    cout << "Samples Seattle: all: " << samples.size() <<
     ", inc: " << s_inc.size() <<
     ", pov: " << s_pov.size() <<
     ", rent: " << s_rent.size() << endl;
@@ -56,120 +88,8 @@ TEST(SeattleModelTests, testSamplesSeattle) {
     ASSERT_NE(male_cnt, 0);
 }
 
-// bool IsMaleAlt(Sample i) {
-//     return i.male;
-// }
-
-// TEST(ModelTests, testAltSamples) {
-//     Model model;
-//     model.genAltSamples();
-//     vector<Sample> samples = model.getAltSamples();
-//     int male_cnt = count_if(samples.begin(), samples.end(), IsMaleAlt);
-//     cout << "Male count: " << male_cnt << endl;
-//     ASSERT_NE(male_cnt, 0);
-// }
-
-// TEST(ModelTests, testProbHighestIncome) {
-//     Model model;
-//     model.genSamples();
-//     Sample* sample = new Sample();
-//     sample->highest_income=true;
-//     sample->male=true;
-//     float p = model.getProbHighestIncome(sample);
-//     cout << "p male highest income: " << p << endl;
-//     ASSERT_GT(p, 0);
-//     sample->male=false;
-//     p = model.getProbHighestIncome(sample);
-//     cout << "p nonmale highest income: " << p << endl;
-//     ASSERT_GT(p, 0);
-// }
-
-// TEST(ModelTests, testProbBelowPoverty) {
-//     Model model;
-//     model.genSamples();
-//     Sample* sample = new Sample();
-//     sample->below_poverty=true;
-//     sample->male=true;
-//     float p = model.getProbBelowPoverty(sample);
-//     cout << "p male below poverty: " << p << endl;
-//     ASSERT_GT(p, 0);
-//     sample->male=false;
-//     p = model.getProbBelowPoverty(sample);
-//     cout << "p nonmale below poverty: " << p << endl;
-//     ASSERT_GT(p, 0);
-// }
-
-// TEST(ModelTests, testProbRentBurdened) {
-//     Model model;
-//     model.genSamples();
-//     Sample* sample = new Sample();
-//     sample->rent_burdened=true;
-//     sample->male=true;
-//     float p = model.getProbRentBurdened(sample);
-//     cout << "p male rent burdened: " << p << endl;
-//     ASSERT_GT(p, 0);
-//     sample->male=false;
-//     p = model.getProbRentBurdened(sample);
-//     cout << "p nonmale rent burdened: " << p << endl;
-//     ASSERT_GT(p, 0);
-// }
-
-// TEST(ModelTests, testProbRentBurdenedSeattle) {
-//     Model model;
-//     model.genSamples();
-//     Sample* sample = new Sample();
-//     sample->rent_burdened=true;
-//     sample->male=true;
-//     float p = model.getProbRentBurdened(sample);
-//     cout << "p male rent burdened: " << p << endl;
-//     ASSERT_GT(p, 0);
-//     sample->male=false;
-//     p = model.getProbRentBurdened(sample);
-//     cout << "p nonmale rent burdened: " << p << endl;
-//     ASSERT_GT(p, 0);
-//     SeattleModel seattle_model;
-//     seattle_model.genSamples();
-//     Sample* seattle_sample = new Sample();
-//     seattle_sample->rent_burdened=true;
-//     seattle_sample->male=true;
-//     p = seattle_model.getProbRentBurdened(sample);
-//     cout << "seattle p male rent burdened: " << p << endl;
-//     ASSERT_GT(p, 0);
-//     seattle_sample->male=false;
-//     p = seattle_model.getProbRentBurdened(sample);
-//     cout << "seattle p nonmale rent burdened: " << p << endl;
-//     ASSERT_GT(p, 0);
-// }
-
-// TEST(ModelTests, testProbBelowPovertySeattle) {
-//     Model model;
-//     model.genSamples();
-//     Sample* sample = new Sample();
-//     sample->below_poverty=true;
-//     sample->male=true;
-//     float p = model.getProbBelowPoverty(sample);
-//     cout << "p male below poverty: " << p << endl;
-//     ASSERT_GT(p, 0);
-//     sample->male=false;
-//     p = model.getProbBelowPoverty(sample);
-//     cout << "p nonmale below poverty: " << p << endl;
-//     ASSERT_GT(p, 0);
-//     SeattleModel seattle_model;
-//     seattle_model.genSamples();
-//     Sample* seattle_sample = new Sample();
-//     seattle_sample->below_poverty=true;
-//     seattle_sample->male=true;
-//     p = seattle_model.getProbBelowPoverty(sample);
-//     cout << "seattle p male below poverty: " << p << endl;
-//     ASSERT_GT(p, 0);
-//     seattle_sample->male=false;
-//     p = seattle_model.getProbBelowPoverty(sample);
-//     cout << "seattle p nonmale below poverty: " << p << endl;
-//     ASSERT_GT(p, 0);
-// }
-
 TEST(ModelTests, testCalcRentBurdenedBase) {
-    Model model;
+    Model model(10000);
     model.genSamples();
     auto samples = model.getSamplesRentBurdened();
     int particles = samples.size();
@@ -188,7 +108,7 @@ TEST(ModelTests, testCalcRentBurdenedBase) {
 }
 
 TEST(SeattleModelTests, testCalcRentBurdenedSeattle) {
-    SeattleModel model;
+    SeattleModel model(10000);
     model.genSamples();
     auto samples = model.getSamplesRentBurdened();
     int particles = samples.size();

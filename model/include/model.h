@@ -10,7 +10,6 @@ using namespace std;
 
 class Model {
     protected:
-        const int DEFAULT_NUM_SAMPLES = 10000;
         int numSamples;
         vector<shared_ptr<Sample>> samples;
         vector<shared_ptr<Sample>> samples_highest_income;
@@ -18,9 +17,8 @@ class Model {
         vector<shared_ptr<Sample>> samples_rent_burdened;
         default_random_engine generator;
     public:
-        Model();
         Model(int n);
-        virtual bool bernoulli(const float p);
+        bool bernoulli(const float p);
         virtual float p_male() const {
             return 0.5;
         };
@@ -46,7 +44,6 @@ class Model {
             return 0.5;
         };
         virtual float p_rent_burdened() const {
-            cout << "model rent burdened" << endl;
             return 0.5;
         };
         virtual void genSamples();

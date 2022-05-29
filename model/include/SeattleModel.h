@@ -36,7 +36,6 @@ class SeattleModel : public Model {
         };
         float p_rent_burdened() const {
             // ACSDP5Y2020	DP04 GROSS RENT AS A PERCENTAGE OF HOUSEHOLD INCOME (GRAPI) 35% or more
-            cout << "seattle rent burdened" << endl;
             return 0.339;
         };
 };
