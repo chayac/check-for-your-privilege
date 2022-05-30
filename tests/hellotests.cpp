@@ -51,6 +51,9 @@ bool IsMale(shared_ptr<Sample> i) {
 TEST(ModelTests, testSamplesBase) {
     Model model(10000);
     model.genSamples();
+    model.genSamplesHighestIncome();
+    model.genSamplesBelowPoverty();
+    model.genSamplesRentBurdened();
     auto samples = model.getSamples();
     auto s_inc = model.getSamplesHighestIncome();
     auto s_pov = model.getSamplesBelowPoverty();
@@ -71,6 +74,9 @@ TEST(ModelTests, testSamplesBase) {
 TEST(SeattleModelTests, testSamplesSeattle) {
     SeattleModel model(10000);
     model.genSamples();
+    model.genSamplesHighestIncome();
+    model.genSamplesBelowPoverty();
+    model.genSamplesRentBurdened();
     auto samples = model.getSamples();
     auto s_inc = model.getSamplesHighestIncome();
     auto s_pov = model.getSamplesBelowPoverty();
@@ -90,7 +96,7 @@ TEST(SeattleModelTests, testSamplesSeattle) {
 
 TEST(ModelTests, testCalcRentBurdenedBase) {
     Model model(10000);
-    model.genSamples();
+    model.genSamplesRentBurdened();
     auto samples = model.getSamplesRentBurdened();
     int particles = samples.size();
     int nMale = 0;
@@ -109,7 +115,7 @@ TEST(ModelTests, testCalcRentBurdenedBase) {
 
 TEST(SeattleModelTests, testCalcRentBurdenedSeattle) {
     SeattleModel model(10000);
-    model.genSamples();
+    model.genSamplesRentBurdened();
     auto samples = model.getSamplesRentBurdened();
     int particles = samples.size();
     int nMale = 0;
@@ -124,4 +130,10 @@ TEST(SeattleModelTests, testCalcRentBurdenedSeattle) {
     ASSERT_GT(1.0*nMale/particles, 0);
     ASSERT_GT(1.0*nNonmale/particles, 0);
     cout << "Seattle rent burdened: " << 1.0*nMale/particles << ", " << 1.0*nNonmale/particles << endl;
+}
+
+TEST(ModelTests, testJsonExport) {
+    Model model(10);
+    model.genSamples();
+    model.exportSamplesJson("");
 }

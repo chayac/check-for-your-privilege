@@ -47,6 +47,9 @@ class Model {
             return 0.5;
         };
         virtual void genSamples();
+        virtual void genSamplesHighestIncome();
+        virtual void genSamplesBelowPoverty();
+        virtual void genSamplesRentBurdened();
         vector<shared_ptr<Sample>> getSamples() {
             return samples;
         };
@@ -59,4 +62,5 @@ class Model {
         vector<shared_ptr<Sample>> getSamplesRentBurdened() {
             return samples_rent_burdened;
         };
+        void exportSamplesJson(string path);
 };

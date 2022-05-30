@@ -1,9 +1,13 @@
 #pragma once
+#include "json.hpp"
+
+using json = nlohmann::json;
 
 struct Sample {
     bool male = false;
     bool age_25_to_34 = false;
     bool white = false;
+    bool bipoc = false;
     bool highest_income = false;
     bool below_poverty = false;
     bool nonfamily_household = false;

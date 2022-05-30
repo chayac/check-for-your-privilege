@@ -33,3 +33,12 @@
 
 # CMake output
 build/
+
+# API keys
+census_api.txt
+
+# Model output
+*.json
+
+# Mac nonsense
+.DS_Store
