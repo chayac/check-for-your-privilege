@@ -10,3 +10,5 @@ This repository contains code written for my CS109 challenge project, "Check for
   * Runs logistic regressions on data
   * Summarizes group counts
   * Exports group counts data to CSV for use in Observable via SQLite
+* Observable code: ```/observable```
+  * Back the notebook with the interactive tool: https://observablehq.com/@chaya/check-for-your-privilege
