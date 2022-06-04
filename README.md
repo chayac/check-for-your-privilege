@@ -1,6 +1,6 @@
 # check-for-your-privilege
 
-This repository contains code written for my CS109 challenge project, "Check for Your Privilege." There are two components:
+This repository contains code written for my CS109 challenge project, "Check for Your Privilege." There are three components:
 * A library for calculating probability using a Bayesian network with rejection sampling
   * Base class is in model/include/model.h
   * Subclasses are used to define the probabilities for individual models, such as model/include/SeattleModel.h
