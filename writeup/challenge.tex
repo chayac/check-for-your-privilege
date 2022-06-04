@@ -1,0 +1,318 @@
+% LaTeX handouts by Will Monroe
+% Based on B. E. Burr's CS 109 problem set template
+
+\documentclass[12pt]{article}
+\input{preamble.tex}
+
+\usepackage{biblatex} %Imports biblatex package
+\addbibresource{challenge_refs.bib} %Import the bibliography file
+\usepackage{tocloft}
+% \usepackage{minitoc}
+
+\title{CS109 Probability Challenge: "Check For Your Privilege"}
+\author{Chaya Carey}
+\date{2022-06-04}
+
+\begin{document}
+
+\input{header.tex}
+
+% \renewcommand{\baselinestretch}{0.25}\normalsize
+% \renewcommand\cftsecafterpnum{\vskip-15pt}
+% \renewcommand\cftparskip{0}
+% \setlength{\cftbeforesecskip}{0}
+% \tableofcontents
+% \renewcommand{\baselinestretch}{1.0}\normalsize
+
+The main output of this project is an interactive tool to explore conditional probabilities of income in different groups. The writeup in this document describes the probability theory that underpins the tool, but please go check the tool out for the full picture!
+
+\href{https://observablehq.com/d/b1dfcf5fca53a8b2}{https://observablehq.com/d/b1dfcf5fca53a8b2}
+
+You can also see a demo in the linked video, and the appendices will walk through an example of using the tool.
+
+\section{Code}
+Code can be viewed at \href{https://github.com/chayac/check-for-your-privilege}{https://github.com/chayac/check-for-your-privilege}:
+\begin{itemize}
+    \item \textit{data\_processing\_acs.ipynb}: Jupyter notebook for processing American Community Survey data, running logistic regressions, and exporting summarized data to CSV for Observable
+    \item \textit{model/include/model.h}: C++ library for calculating probabilities on a Bayesian network with rejection sampling (not used in the final output)
+\end{itemize}
+
+\section{Video}
+
+\newpage
+
+\section{Writeup}
+
+As a software engineer and long-time Seattle resident, I'm acutely aware of how the expansion of "Big Tech"/FAANG companies has impacted the city. These impacts are good, bad, and everything in between, but they are real. I believe that everyone in Big Tech has a responsibility to be aware of their impact and then be a force of good to amplify the positive effects and mitigate the negative ones.
+
+For this project, I developed \textbf{"Check for Your Privilege,"} an interactive data exploration tool to use principles of conditional probability to understand income inequities and identify ways to address them. The name is a tongue-in-cheek reference to the dual purpose: first to "check for your privilege" by quantifying disparities, and then to write a "check for your privilege" to local non-profits working to address these issues.
+
+This writeup will discuss the probability principles that underpin the tool, namely:
+\begin{itemize}
+    \item Approximating probability with frequencies
+    \item Conditional probability
+    \item Bayes' theorem
+    \item Total probability
+\end{itemize}
+
+\subsection*{Background}
+
+I have benefited from many of the good things that Big Tech has brought to Seattle, such as access to wider variety of high-income roles, reducing my commute as more companies centering in the city instead of suburbs, and a larger community of like-minded engineers that help me grow. Big Tech's influence has allowed me to stay in Seattle, instead of having to relocate to the Bay Area like I did earlier in my career.
+
+But I also recognize that the impact of Big Tech is both good and bad, and both the positive and negative impacts are not distributed equitably. I believe that those of us in Big Tech have a responsibility to recognize the privileges that have been afforded to us and then use that privilege as a force for good. Personally, I am passionate about supporting local non-profits that address inequities associated with gentrification, and I 
+
+Skyrocketing housing prices, a homelessness epidemic, entire populations shifting outside the city - there's a million things that I notice anecdotally, but how can I quantify that? And perhaps more importantly, how can I most effectively donate to organizations that work to remedy these issues?
+
+My goal is to explore this in my project, \textbf{\textit{Check for My Privilege}}. Using probability-based tools, you can ***check for your privilege*** by comparing the odds of being high or low income for tech and non-tech workers, and then ***write a check for your privilege*** to organizations working to make Seattle better for everyone.
+
+
+\subsection*{The Impact of Big Tech}
+
+In the excellent book \textit{The Gentrification of the Internet: How to Reclaim Our Digital Freedom}\cite{gentrification}(go read it now!), the author identifies multiple pathways in which big tech companies impact the cities where they grow. A few key takeaways:
+* "Northern California's big cities are getting \textbf{more unequal and less diverse}." Housing markets shift to support the needs of wealthier residents, resulting in increased housing costs and displacement.
+* The tech workforce is "\textbf{disproportionately White, male, and young}" and "getting encouragement and resources for training in tech is often tied to race, class, and gender."
+* The headquarters of tech companies tend to gentrify the surrounding neighborhoods, and "\textbf{gentrification makes inequality more visible}." While gentrification has both positive and negative impacts, "benefits aren't even distributed. Urban gentrification tends to make rich people richer and poor people poorer."
+
+\subsection*{Interactive Tool for Exploring Disparities with Conditional Probability}
+
+
+
+\subsection*{The Data}
+
+To investigate these issues, I am analyzing data on the distribution of high and low income across Seattle residents. All data is from the 2019 American Community Survey's Public Use Microdata Sample for Seattle.\cite{acs}\cite{pums} See the appendix for more detail on how I used this data.
+
+\subsection*{Visually Comparing Distributions of Income Between Groups}
+
+Intuitively, I think of disparities as differences in outcomes based on unrelated demographic factors. For example, if no racial disparities existed in income, then a BIPOC person would be just as likely as a white person to have a certain income level.
+
+To explore this intuition, I used the frequentist definition of probability\cite{piech:prob} to estimate the probability of different combinations of demographic factors by counting the number of corresponding events in the dataset. The \href{https://observablehq.com/d/b1dfcf5fca53a8b2#cell-1196}{interactive tool} lets you compare the counts of people with high and low income between two different groups, which are the count of people that are part of the given group \textbf{and} have the given income level.\cite{piech:and}
+
+The \href{https://observablehq.com/d/b1dfcf5fca53a8b2#cell-1196}{interactive graphs} are normalized to the size of the group to visually approximate the percentage of people in a group at each income level. If the two groups were equally likely to have a certain income level, the two distributions would be visually similar.
+
+For example, selecting the characteristics that are overrepresented in tech (being white, male, and young) shows a comparison of the income distributions of non-BIPOC males under 35 vs. BIPOC non-males over 35.  Visually, we can see that BIPOC non-males over 35 are less likely to be high income but also less likely to be low income. But if you also condition on tech workers, BIPOC non-males over 35 who aren't tech workers are more likely to be low income.
+
+\subsection*{Formalizing Income Distributions with Conditional Probability}
+
+Visually we can see that each group has a different percentage of people at each income level. To formalize this, we can use conditional probability\cite{piech:cond} to estimate the probability of income level within a group. Using the frequentist definition, we can approximate the conditional probability of having an income level within a group by counting the number of people who have that income level within the group and dividing it by the number of people in the group. For example, the probability of high income among BIPOC people is P(High Income | BIPOC), or approximately N(High Income and BIPOC)/N(BIPOC).
+
+\subsection*{Defining Fairness with Conditional Probability}
+
+How do we know what is equitable? A useful framework is fairness in AI, which analyzes the bias of an algorithm. A biased algorithm "systematically and unfairly" discriminates against certain groups, which can result in "quality of service" harms and allocation harms where the algorithm doesn't work as well for different groups of people and can result in unequal distribution of outcomes.\cite{creel}
+
+We can find an analogue in income distribution by analyzing the bias associated with how income levels are distributed for different types of people. To quantify this, I looked to the "parity" definition of fairness through awareness. Under the parity definition of fairness, an algorithm is fair if "the probability that the algorithm makes a positive prediction is the same regardless of being conditioned on demographic variable".\cite{piech:fair}
+
+This definition is based on the equality of conditional probability between groups, which we can use here by calculating the conditional probability of an outcome for each group. For example:
+
+$$P(\text{High Income | White}) = P(\text{High Income | Non-White})$$
+
+In the \href{https://observablehq.com/d/b1dfcf5fca53a8b2#cell-1189}{interactive tool}, you can compare the conditional odds of having high or low income conditioned on the demographic factors you select, which show  how much more or less likely the outcome is given the condition.\cite[p.~70]{ross}
+
+\subsection*{Decomposing Conditional Probability with Bayes' Theorem}
+
+Now that we have defined equity in terms of conditional probability, we can decompose the conditional probability using Bayes' theorem.\cite{piech:bayes} 
+
+For example, the probability of having high income for a BIPOC person P(H|F) is a combination of: 
+* P(F): the probability of being BIPOC
+* P(H): the probability of having high income
+* P(F|H): the probability of being BIPOC given high income
+
+The \href{https://observablehq.com/d/b1dfcf5fca53a8b2#cell-373}{interactive tool} breaks down the calculation of each component using the approximate conditional probabilities from the data.
+
+\subsection*{Donating Effectively Using Bayes' Theorem}
+
+This is the fun part! Now we get to use all these probability tools to determine how donating to different organizations can impact the income disparities we've seen. 
+
+Donating money is a great way to help your community, but how do you know where to direct your efforts? One useful tool for learning to be an effective donor is theory of change, a framework that identifies "how and why a desired change is expected to happen in a particular context."\cite{effphil}\cite{theorychange} For example, if you want to contribute towards ending homelessness, the organization's theory of change can help you understand how exactly they plan to accomplish that and then decide if you think donating to the organization will further your goal.
+
+But I think we can use Bayes' theorem for our own personal theory of change. I talked earlier about how Bayes' theorem combines different types of probability. So let's say that you have identified (probably because of all the awesome boxchecking you've done so far!) a particular issue, such as the probability of having low income among BIPOC people. Where do you start? That is, what's your theory of change?
+
+Thanks to Bayes' theorem, you now know the components of this conditional probability, and **each component of Bayes' theory is a potential way to effect change**! Now your theory of change has multiple pathways:
+* Reducing the probability of being low income among BIPOC people (the posterior probability)
+* Reducing the overall probability of being low income (the prior probability)
+* Reducing the probability of being BIPOC among low income people (the likelihood)
+
+Reducing probabilities may seem abstract, but in the last section, we broke down these probabilities into estimates using the frequencies observed in the sample data. All of these probabilities are determined by the counts of different groups of people:
+* All people who are low income
+* People who are low income and BIPOC
+* People who are not low income
+* People who are BIPOC but not low income
+
+One final probability tool to consider is the **law of total probability**. The fourth component of Bayes' theorem, the normalization factor, may seem difficult to impact for demographic features. Increasing the BIPOC population of Seattle might be a hard goal, but the law of total probability lets us again decompose this probability into multiple parts:
+
+$$P(F) = P(F \| H) P(H) + P(F \| H^C) P(H^C)$$
+
+Or, the probability of being BIPOC is made up of the same probabilities as the numerator of Bayes' theorem, plus two new components: the probability of being BIPOC among people who aren't low income and the probability of not being low income.
+
+These may seem like subtle differences, but 
+
+The law of total probability gives us two things:
+* Gives us a way to impact the Bayes' denominator by impacting each factor within total probability
+* Expands into additional factors with the general total law of probability
+
+That's right - the general total law of probability lets us extend this even further and understand the Bayes' denominator as the sum of any number of factors associated with the normalization factor, even if they don't appear in the numerator. For example, you could rewrite it in terms of STEM degrees among BIPOC people.
+
+Do you see where this is going? It turns out supporting positive change in the BIPOC community in any way will have some impact on the probability of BIPOC people having low income. Will it have the largest possible impact on that specific probability? Probably not, but it will also have some impact on other outcomes too, and maybe you want to take a more general approach. It's your theory of change, and it's your money (or time, or attention, or whatever you have to give)! Perhaps the best lesson from Bayes' theorem is the simplest one: we are all dealing with uncertainty so we're not expecting a perfect answer - just a better one, now that we've learned more.
+
+
+\newpage
+Old version:
+
+
+Consider one formal definitions of fairness in AI: fairness through awareness.\cite{piech:fair}\cite{creel}\cite{Pessach} In fairness through awareness, an algorithm is fair i
+ 
+Fairness through unawareness aims for equity by excluding demographic factors. But we've already seen that disparities exist on a variety of dimensions, so let's use that information to make things better!
+
+Fairness through awareness uses knowledge of demographic factors to determine if an outcome is fairly distributed across demographics. In terms of probability, we can use **conditional probability** to measure these differences.
+
+We can then leverage conditional probability\cite{piech:cond} to estimate the probability of income level within a group. 
+
+
+\subsection*{Explore Income Distributions}
+
+To determine what disparities exist, first we'll look at the distribution of high and low income. ***Use the checkboxes below to select different factors*** and compare the distributions between the two charts.
+
+Why these factors? Because they capture the typical demographics of tech workers, and sample size limitations make counts within tech workers too small for comparison.
+
+What would it mean to have a "good graph"? Intuitively, I think that we would want the shapes to be similar between groups - at least for demographics that should be **independent of income**. If you have a bachelor's degree in a STEM field, your income distribution should be the same regardless of race and gender (but might reasonably differ from someone without a degree).
+
+How do we translate this intuitive sense into something we can quantify?
+
+
+
+\subsection*{Fairness through Awareness: Parity}
+
+Under the parity definition of fairness, an outcome is fairly distributed if the conditional probability of an outcome for someone with a given demographic factor is the same as the conditional probability of the same outcome for someone with a given demographic factor. For example:
+
+$$P(\text{High Income | White}) = P(\text{High Income | Non-White})$$
+
+To see this in action, ***use the checkboxes*** to see how the odds of being high or low income change based on the factors you select. (You can also use the checkboxes above, and changing either will update both sections.)
+
+What would tell us that there is parity between the groups? If the **conditional odds are similar to each other**, the effect on the outcome is similar for both groups.
+
+The ratio between the conditional odds and the base odds is also informative: if both groups have ratios greater than 1, then both sets of factors have a positive impact on the outcome (and vice versa if less than 1). 
+
+If the magnitudes of the ratios are similar, then there might be parity here. **But if the magnitudes are very different or go in opposite directions, then there is likely a disparity between the groups**.
+
+Try a few different combinations, and I think you will agree: **parity is not being satisfied here**.
+
+\subsection*{Digging Deeper with Bayes' Theorem}
+
+So, by comparing the conditional probabilities for different groups, we have seen that disparities exist. How do we better understand that?
+
+We can use **Bayes' Theorem** to decompose the conditional probabilities and get insight into where these differences arise. 
+
+$$P(H|F) = \dfrac{P(F | H) P(H)}{P(F)}$$
+
+For example, the probability of having high income for a group P(H|F) is a combination of: 
+* P(F): the probability of being in that group
+* P(H): the probability of having high income
+* P(F|H): the probability of being in that group for someone with high income
+
+The next two sections show how Bayes' theorem is used to calculate the conditional probabilities for the groups selected above. **Scroll back up** to change the checkboxes.
+
+\subsection*{What We've Learned So Far}
+
+Whew, that was a lot of numbers! But I hope it helped you see how the three different components of probability contribute in different ways.
+
+\subsection*{Okay, So What Now?}
+
+Remember that part at the beginning about writing a check for your privilege? We can use our new toolkit to help make decisions about how to donate effectively! 
+
+Donating money is a great way to help your community, but how do you know where to direct your efforts? One useful tool for [learning to be an effective donor](https://pacscenter.stanford.edu/research/effective-philanthropy-learning-initiative/donor-guide/) is **theory of change**, a [framework](https://www.theoryofchange.org/what-is-theory-of-change/) that identifies "how and why a desired change is expected to happen in a particular context." For example, if you want to contribute towards ending homelessness, the organization's theory of change can help you understand how exactly they plan to accomplish that and then decide if you think donating to the organization will further your goal.
+
+But I think we can use Bayes' theorem for our own personal theory of change. I talked earlier about how Bayes' theorem combines different types of probability. So let's say that you have identified (probably because of all the awesome boxchecking you've done so far!) a particular issue, such as the probability of having low income among BIPOC people. Where do you start? That is, what's your theory of change?
+
+Thanks to Bayes' theorem, you now know the components of this conditional probability, and **each component of Bayes' theory is a potential way to effect change**! Now your theory of change has multiple pathways:
+* Reducing the probability of being low income among BIPOC people (the posterior probability)
+* Reducing the overall probability of being low income (the prior probability)
+* Reducing the probability of being BIPOC among low income people (the likelihood)
+
+Reducing probabilities may seem abstract, but in the last section, we broke down these probabilities into estimates using the frequencies observed in the sample data. All of these probabilities are determined by the counts of different groups of people:
+* All people who are low income
+* People who are low income and BIPOC
+* People who are not low income
+* People who are BIPOC but not low income
+
+One final probability tool to consider is the **law of total probability**. The fourth component of Bayes' theorem, the normalization factor, may seem difficult to impact for demographic features. Increasing the BIPOC population of Seattle might be a hard goal, but the law of total probability lets us again decompose this probability into multiple parts:
+
+$$P(F) = P(F \| H) P(H) + P(F \| H^C) P(H^C)$$
+
+Or, the probability of being BIPOC is made up of the same probabilities as the numerator of Bayes' theorem, plus two new components: the probability of being BIPOC among people who aren't low income and the probability of not being low income.
+
+These may seem like subtle differences, but 
+
+The law of total probability gives us two things:
+* Gives us a way to impact the Bayes' denominator by impacting each factor within total probability
+* Expands into additional factors with the general total law of probability
+
+That's right - the general total law of probability lets us extend this even further and understand the Bayes' denominator as the sum of any number of factors associated with the normalization factor, even if they don't appear in the numerator. For example, you could rewrite it in terms of STEM degrees among BIPOC people.
+
+Do you see where this is going? It turns out supporting positive change in the BIPOC community in any way will have some impact on the probability of BIPOC people having low income. Will it have the largest possible impact on that specific probability? Probably not, but it will also have some impact on other outcomes too, and maybe you want to take a more general approach. It's your theory of change, and it's your money (or time, or attention, or whatever you have to give)! Perhaps the best lesson from Bayes' theorem is the simplest one: we are all dealing with uncertainty so we're not expecting a perfect answer - just a better one, now that we've learned more.
+
+\newpage 
+
+\appendix
+\addcontentsline{toc}{section}{Appendices}
+\section*{Appendices}
+\section{Sources}
+
+
+% \printbibliography %Prints bibliography
+\printbibliography[heading=none]
+
+
+\section{Derivations}
+
+In my project, I use the American Community Survey data to approximate probabilities. This section covers the derivations of the conversions among the frequentist probability estimate, conditional probability, and Bayes' theorem.
+
+$H$ = high income
+
+$F$ = factors
+
+$G$ = some other set of factors
+
+$n$ = total number of people in dataset
+
+Bayes theorem:
+\begin{align*}
+    P(H\|F) &= \dfrac{P(F \| H) P(H)}{P(F)} && \text{Bayes' theorem} \\
+    P(F|H) &= \frac{P(FH)}{P(H)} && \text{Def of Cond Prob} \\
+    &\approx \frac{
+    	(\text{$n(F$ and $H$})) / n
+    }{
+    	(\text{$n(H)$}) / n
+    } && \text{Def of Prob} \\
+    &\approx \frac{n(FH)}{n(H)} \\
+    P(H) &\approx \frac{n(H)}{n} \\
+    P(F) &\approx \frac{n(F)}{n} \\
+    P(H\|F) &= \frac{n(FH)/n(H) \cdot n(H)/n}{n(F)/n} && \text{Plug back into Bayes' theorem} \\
+    &= \frac{n(FH)}{n(H)} \cdot \frac{n(H)}{n} \cdot \frac{n}{n(F)}  \\
+    &= \frac{n(FH)}{n(F)}
+\end{align*}
+
+Odds:
+\begin{align*}
+    O(H | F) &= \frac{P(H | F)}{P(H^C | F)} && \text{Def of odds} \\
+    &= \frac{n(FH)/n(F)}{n(FH^C)/n(F)} \\
+    &= \frac{n(FH)}{n(FH^C)} \\
+    &= \frac{n(FH)}{n - n(FH)} \\
+    O(H | F) &= O(G | F) \\
+    \frac{n(FH)}{n - n(FH)} &= \frac{n(GH)}{n - n(GH)} \\
+    \frac{O(H | F)}{O(G | F)} &= \frac{n(FH)/(n - n(FH))}{n(GH)/(n - n(GH))}
+\end{align*}
+
+Fairness:
+\begin{align*}
+    P(H | F) &= P(H | F^C) && \text{Def of parity}\\
+    \frac{n(FH)}{n(H)} &= \frac{n(F^CH)}{n(H)} \\
+    n(FH) &= n(F^CH) \\
+\end{align*}
+
+Law of total probability:
+\begin{align*}
+    P(F) &= P(F \| H) P(H) + P(F \| H^C) P(H^C) \\
+    P(H | F) &= \dfrac{P(F \| H) P(H)}{P(F \| H) P(H) + P(F \| H^C) P(H^C)} \\
+    &= \dfrac{n(FH)/n(H) \cdot n(H)/n}{n(FH)/n(H) \cdot n(H)/n + n(FH^C)/n(H^C) \cdot n(H^C)/n}
+\end{align*}
+
+\end{document}
