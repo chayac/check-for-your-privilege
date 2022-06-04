@@ -9,7 +9,7 @@ using namespace std;
 class CentralAreaModel : public Model {
     public:
         CentralAreaModel(int n) : Model{n} {};
-        
+
         // using values from Seattle model
         float p_male() const { return 0.506; };
         float p_25_to_34() const { return 0.247; };

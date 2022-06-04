@@ -42,15 +42,6 @@ void Model::genSamples() {
         sample->bach_degree_or_higher = bernoulli(p_deg);
         sample->rent_burdened = bernoulli(p_rent);
         samples.push_back(sample);
-        // if (sample->highest_income && !sample->below_poverty) {
-        //     samples_highest_income.push_back(sample);
-        // }
-        // if (!sample->highest_income && sample->below_poverty) {
-        //     samples_below_poverty.push_back(sample);
-        // }
-        // if (sample->rent_burdened) {
-        //     samples_rent_burdened.push_back(sample);
-        // }
     }
 }
 
@@ -72,10 +63,10 @@ void Model::genSamplesHighestIncome() {
         sample->white = bernoulli(p_w);
         sample->bipoc = bernoulli(p_b);
         sample->highest_income = bernoulli(p_inc);
-        // sample->below_poverty = bernoulli(p_pov);
+        sample->below_poverty = bernoulli(p_pov);
         sample->nonfamily_household = bernoulli(p_nf);
         sample->bach_degree_or_higher = bernoulli(p_deg);
-        // sample->rent_burdened = bernoulli(p_rent);
+        sample->rent_burdened = bernoulli(p_rent);
         samples_highest_income.push_back(sample);
     }
 }
@@ -97,11 +88,11 @@ void Model::genSamplesBelowPoverty() {
         sample->age_25_to_34 = bernoulli(p_age);
         sample->white = bernoulli(p_w);
         sample->bipoc = bernoulli(p_b);
-        // sample->highest_income = bernoulli(p_inc);
+        sample->highest_income = bernoulli(p_inc);
         sample->below_poverty = bernoulli(p_pov);
         sample->nonfamily_household = bernoulli(p_nf);
         sample->bach_degree_or_higher = bernoulli(p_deg);
-        // sample->rent_burdened = bernoulli(p_rent);
+        sample->rent_burdened = bernoulli(p_rent);
         samples_below_poverty.push_back(sample);
     }
 }
@@ -123,8 +114,8 @@ void Model::genSamplesRentBurdened() {
         sample->age_25_to_34 = bernoulli(p_age);
         sample->white = bernoulli(p_w);
         sample->bipoc = bernoulli(p_b);
-        // sample->highest_income = bernoulli(p_inc);
-        // sample->below_poverty = bernoulli(p_pov);
+        sample->highest_income = bernoulli(p_inc);
+        sample->below_poverty = bernoulli(p_pov);
         sample->nonfamily_household = bernoulli(p_nf);
         sample->bach_degree_or_higher = bernoulli(p_deg);
         sample->rent_burdened = bernoulli(p_rent);

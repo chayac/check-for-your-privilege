@@ -9,8 +9,8 @@ using namespace std;
 
 void genSeparateModels() {
     int n = 1000000;
-    CentralAreaModel model(n);
-    // SeattleModel model(n);
+    // CentralAreaModel model(n);
+    SeattleModel model(n);
     model.genSamples();
     model.genSamplesHighestIncome();
     model.genSamplesBelowPoverty();
@@ -34,7 +34,7 @@ void genSeparateModels() {
     float nOutNonPriv = 0.0;
 
     for (auto s : sInc) {
-        if (s->white) {
+        if (!s->bipoc) {
             nPriv++;
             if (s->highest_income) {
                 nOutPriv++;
@@ -60,7 +60,7 @@ void genSeparateModels() {
     nOutNonPriv = 0.0;
 
     for (auto s : sPov) {
-        if (s->white) {
+        if (!s->bipoc) {
             nPriv++;
             if (s->below_poverty) {
                 nOutPriv++;
@@ -86,7 +86,7 @@ void genSeparateModels() {
     nOutNonPriv = 0.0;
 
     for (auto s : sRent) {
-        if (s->white) {
+        if (!s->bipoc) {
             nPriv++;
             if (s->rent_burdened) {
                 nOutPriv++;
