@@ -32,19 +32,19 @@
 
 The main output of this project is an interactive tool to explore conditional probabilities of income in different groups. The writeup in this document describes the probability theory that underpins the tool, but please go check the tool out for the full picture!
 
-\href{https://observablehq.com/d/b1dfcf5fca53a8b2}{https://observablehq.com/d/b1dfcf5fca53a8b2}
-
-You can also see a demo in the linked video, and the appendices will walk through an example of using the tool.
+\textbf{\href{https://observablehq.com/@chaya/check-for-your-privilege}{https://observablehq.com/@chaya/check-for-your-privilege}}
 
 \section{Code}
 Code can be viewed at \href{https://github.com/chayac/check-for-your-privilege}{https://github.com/chayac/check-for-your-privilege}:
 \begin{itemize}
     \item \textit{data\_processing\_acs.ipynb}: Jupyter notebook for processing American Community Survey data, running logistic regressions, and exporting summarized data to CSV for Observable
     \item \textit{model/include/model.h}: C++ library for calculating probabilities on a Bayesian network with rejection sampling (not used in the final output)
+    \item \textit{observable/}: the Javascript code used for the Observable notebook
 \end{itemize}
 
 \section{Video}
 
+\href{https://www.youtube.com/watch?v=evKfsRLXK0U}{https://www.youtube.com/watch?v=evKfsRLXK0U}
 \newpage
 
 \section{Writeup}
@@ -73,9 +73,9 @@ To investigate these issues, I am analyzing data on the distribution of high and
 
 Intuitively, I think of disparities as differences in outcomes based on unrelated demographic factors. For example, if no racial disparities existed in income, then a BIPOC person would be just as likely as a white person to have a certain income level.
 
-To explore this intuition, I used the frequentist definition of probability\cite{piech:prob} to estimate the probability of different combinations of demographic factors by counting the number of corresponding events in the dataset. The \href{https://observablehq.com/d/b1dfcf5fca53a8b2#cell-1196}{interactive tool} lets you compare the counts of people with high and low income between two different groups, which are the count of people that are part of the given group \textbf{and} have the given income level.\cite{piech:and}
+To explore this intuition, I used the frequentist definition of probability\cite{piech:prob} to estimate the probability of different combinations of demographic factors by counting the number of corresponding events in the dataset. The \href{https://observablehq.com/@chaya/check-for-your-privilege}{interactive tool} lets you compare the counts of people with high and low income between two different groups, which are the count of people that are part of the given group \textbf{and} have the given income level.\cite{piech:and}
 
-The \href{https://observablehq.com/d/b1dfcf5fca53a8b2#cell-1196}{interactive graphs} are normalized to the size of the group to visually approximate the percentage of people in a group at each income level. If the two groups were equally likely to have a certain income level, the two distributions would be visually similar.
+The \href{https://observablehq.com/@chaya/check-for-your-privilege}{interactive graphs} are normalized to the size of the group to visually approximate the percentage of people in a group at each income level. If the two groups were equally likely to have a certain income level, the two distributions would be visually similar.
 
 For example, selecting the characteristics that are overrepresented in tech (being white, male, and young) shows a comparison of the income distributions of non-BIPOC males under 35 vs. BIPOC non-males over 35.  Visually, we can see that BIPOC non-males over 35 are less likely to be high income but also less likely to be low income. But if you also condition on tech workers, BIPOC non-males over 35 who aren't tech workers are more likely to be low income.
 
@@ -93,7 +93,7 @@ This definition is based on the equality of conditional probability between grou
 
 $$P(\text{High Income | White}) = P(\text{High Income | Non-White})$$
 
-In the \href{https://observablehq.com/d/b1dfcf5fca53a8b2#cell-1189}{interactive tool}, you can compare the conditional odds of having high or low income conditioned on the demographic factors you select, which show  how much more or less likely the outcome is given the condition.\cite[p.~70]{ross}
+In the \href{https://observablehq.com/@chaya/check-for-your-privilege}{interactive tool}, you can compare the conditional odds of having high or low income conditioned on the demographic factors you select, which show  how much more or less likely the outcome is given the condition.\cite[p.~70]{ross}
 
 \subsection*{Decomposing Conditional Probability with Bayes' Theorem}
 
@@ -104,7 +104,7 @@ For example, the probability of having high income for a BIPOC person P(H|F) is 
 * P(H): the probability of having high income
 * P(F|H): the probability of being BIPOC given high income
 
-The \href{https://observablehq.com/d/b1dfcf5fca53a8b2#cell-373}{interactive tool} breaks down the calculation of each component using the approximate conditional probabilities from the data.
+The \href{https://observablehq.com/@chaya/check-for-your-privilege3}{interactive tool} breaks down the calculation of each component using the approximate conditional probabilities from the data.
 
 \subsection*{Donating Effectively Using Bayes' Theorem}
 
